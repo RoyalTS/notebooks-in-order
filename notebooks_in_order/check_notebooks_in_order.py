@@ -19,10 +19,32 @@ def check_execution_order(
 
     pass_check = [True]
 
-    def _check_all_executed(execution_counts):
+    def _check_all_executed(execution_counts: list) -> bool:
+        """Check all cells were executed.
+
+        Parameters
+        ----------
+        execution_counts : list
+            execution_counts
+
+        Returns
+        -------
+        bool
+        """
         return not None in execution_counts
 
-    def _check_in_order(execution_counts):
+    def _check_in_order(execution_counts: list) -> bool:
+        """Check that execution counts that aren't None go from 1 to N.
+
+        Parameters
+        ----------
+        execution_counts : list
+            execution counts
+
+        Returns
+        -------
+        bool
+        """
         execution_counts = [x for x in execution_counts if x is not None]
         return [x + 1 for x in range(len(execution_counts))] == execution_counts
 
@@ -40,7 +62,18 @@ def check_execution_order(
     return all(pass_check)
 
 
-def check_all_notebooks(filenames):
+def check_all_notebooks(filenames: list) -> bool:
+    """Check whether all notebooks in the given list were run top to bottom.
+
+    Parameters
+    ----------
+    filenames : list
+        list of notebook filenames
+
+    Returns
+    -------
+    bool
+    """
     check_results = {
         f: check_execution_order(f, check_top_to_bottom=True) for f in filenames
     }
