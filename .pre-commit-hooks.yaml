@@ -2,5 +2,6 @@
   name: notebooks-in-order
   entry: check_notebooks_in_order
   language: python
-  files: '/.ipynb'
-  additional_dependencies: ['nbformat']
+  files: '\.ipynb$'
+  additional_dependencies:
+  - nbformat
