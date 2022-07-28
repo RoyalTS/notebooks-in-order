@@ -83,8 +83,7 @@ def check_all_notebooks(filenames: list) -> bool:
             print(f"Notebook {f} not executed top to bottom!")
 
     # if any of the notebooks don't pass checks, exit with error code 1
-    if not all(check_results.values()):
-        sys.exit(1)
+    return all(check_results.values())
 
 
 def main():
@@ -92,7 +91,8 @@ def main():
     parser.add_argument("filenames", nargs="*")
     args = parser.parse_args()
 
-    check_all_notebooks(args.filenames)
+    if not check_all_notebooks(args.filenames):
+        sys.exit(1)
 
 
 if __name__ == "__main__":
