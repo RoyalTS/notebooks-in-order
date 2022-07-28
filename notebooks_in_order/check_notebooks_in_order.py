@@ -62,7 +62,28 @@ def check_execution_order(
     return all(pass_check)
 
 
-def check_all_notebooks(filenames: list) -> bool:
+def strip_output(notebook_path: str) -> None:
+    """Strip output from notebook.
+
+    Pilfered from https://stackoverflow.com/a/36994695/1291563
+
+    Parameters
+    ----------
+    notebook_path : str
+        path to the Jupyter notebook
+    """
+    ntbk = nbf.read(notebook_path, nbf.NO_CONVERT)
+
+    for cell in ntbk.cells:
+        if hasattr(cell, "outputs"):
+            cell.outputs = []
+        if hasattr(cell, "prompt_number"):
+            del cell["prompt_number"]
+
+    nbf.write(ntbk, notebook_path)
+
+
+def check_all_notebooks(filenames: list, strip_on_fail=False) -> bool:
     """Check whether all notebooks in the given list were run top to bottom.
 
     Parameters
@@ -81,6 +102,9 @@ def check_all_notebooks(filenames: list) -> bool:
     for f, pass_check in check_results.items():
         if not pass_check:
             print(f"Notebook {f} not executed top to bottom!")
+            if strip_on_fail:
+                print("  Stripping all output")
+                strip_output(f)
 
     # if any of the notebooks don't pass checks, exit with error code 1
     return all(check_results.values())
@@ -88,10 +112,17 @@ def check_all_notebooks(filenames: list) -> bool:
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--strip-on-fail",
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
     parser.add_argument("filenames", nargs="*")
     args = parser.parse_args()
 
-    if not check_all_notebooks(args.filenames):
+    if not check_all_notebooks(
+        filenames=args.filenames, strip_on_fail=args.strip_on_fail
+    ):
         sys.exit(1)
 
 

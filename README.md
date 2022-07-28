@@ -15,3 +15,11 @@ repos:
   hooks:
   - id: notebooks-in-order
 ```
+
+You can additionally add
+
+```yaml
+  args: [--strip-on-fail]
+```
+
+to strip all output cells from the notebook if the check fails.
