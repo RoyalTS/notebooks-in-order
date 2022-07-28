@@ -49,8 +49,9 @@ def check_all_notebooks(filenames):
         if not pass_check:
             print(f"Notebook {f} not executed top to bottom!")
 
+    # if any of the notebooks don't pass checks, exit with error code 1
     if not all(check_results.values()):
-        sys.exit(0)
+        sys.exit(1)
 
 
 def main():
