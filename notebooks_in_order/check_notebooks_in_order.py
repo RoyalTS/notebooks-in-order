@@ -24,7 +24,7 @@ def check_execution_order(
 
     def _check_in_order(execution_counts):
         execution_counts = [x for x in execution_counts if x is not None]
-        return sorted(execution_counts) == execution_counts
+        return [x + 1 for x in range(len(execution_counts))] == execution_counts
 
     if check_in_order:
         pass_check.append(_check_in_order(execution_counts))
