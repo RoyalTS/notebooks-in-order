@@ -3,4 +3,4 @@
   entry: check_notebooks_in_order
   language: python
   files: '/.ipynb'
-  additional_dependencies: ['nbf']
+  additional_dependencies: ['nbformat']
