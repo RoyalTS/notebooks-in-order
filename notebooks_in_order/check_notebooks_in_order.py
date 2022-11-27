@@ -17,6 +17,13 @@ def check_execution_order(
     non_empty_cells = [cell for cell in output_cells if cell["source"] != ""]
     execution_counts = [cell["execution_count"] for cell in non_empty_cells]
 
+    def _all_none(l):
+        return all([i is None for i in l])
+
+    # return early if no cells were executed
+    if _all_none(execution_counts):
+        return True
+
     pass_check = [True]
 
     def _check_all_executed(execution_counts: list) -> bool:
